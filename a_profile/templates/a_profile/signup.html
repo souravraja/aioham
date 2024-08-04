@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--=============== REMIXICONS ===============-->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'a_profile/css/signup.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+            
+            {% for message in messages %}
+            <h5>{{message}}</h5>
+            {% endfor %}
+        </div>
+    <div class="container">
+        
+        <div class="form-box">
+            <form action="" method="post" class="login__form">
+                {% csrf_token %}
+                <h2>Register</h2>
+                <div class="input_box">
+                    <i class="ri-user-3-line login__icon"></i>
+                    <input type="text" placeholder="username" name="username">
+                </div>
+                <div class="input_box login__icon">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" placeholder="email" name="email">
+                </div>
+                <div class="input_box">
+                    <i class="ri-lock-2-line login__icon"></i>
+                    <input type="password" placeholder="password" name="pswd">
+                    <!-- <i class="ri-eye-off-line login__eye" id="login-eye"></i> -->
+                </div>
+                <div class="input_box">
+                    <i class="ri-lock-2-line login__icon"></i>
+                    <input type="password" placeholder="password" name="pswd2">
+                    <!-- <i class="ri-eye-off-line login__eye" id="login-eye"></i> -->
+                </div>
+                <div class="button">
+                    <button type="submit" class="btn">submit</button>
+                </div>
+                <div class="group">
+                    <span><a href="">Forget-passwoed</a></span>
+                    <span><a href="{% url 'profile_singin' %}">Login</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

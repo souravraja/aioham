@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from .forms import *
 from django.db.models import Count
 from a_posts.forms import*
+from django.contrib.auth.models import User,auth
 # Create your views here.
 
 def profile_view(request,username=None):
@@ -57,11 +58,56 @@ def profile_delete_view(request):
         return redirect('home')
     return render(request,'a_profile/profile_delete.html')
 
-def prfile_login(request):
-    return render(request,'a_profile/profile_login.html')
+def profile_login(request):
+    if request.method == "POST":
+        username=request.POST['username']
+        password=request.POST['pswd']
+        print(username)
+        print(password)
+        user=auth.authenticate(username=username,password=password)
+        if user is not None:
+            auth.login(request,user)
+            return redirect('/')
+        else:
+            messages.info(request,'Crendentials Invalid')
+            return redirect('profile_signup')
+    else:
+        return render(request,'a_profile/signin.html')
 
-def prfile_signup(request):
-    return render(request,'a_profile/profile_signup.html')
+def profile_signup(request):
+    if request.method == 'POST':
+        username=request.POST['username']
+        email=request.POST['email']
+        pswd=request.POST['pswd']
+        pswd2=request.POST['pswd2']
 
-def prfile_logout(request):
+        if pswd ==pswd2:
+            if User.objects.filter(email=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('profile_signup')
+            elif User.objects.filter(username=username).exists():
+                messages.info(request,'UserName Taken')
+                return redirect('profile_signup')
+            else:
+                user=User.objects.create_user(username=username,email=email,password=pswd)
+                user.save()
+                print('raja1')
+                # log user in and redirect to settings page 
+                # create a Profile object for new user 
+                user=User.objects.get(username=username)
+                print('raja2')
+                new_profile=Profile.objects.get_or_create(user=user)
+                print('raja3')
+                
+                print('raja4')
+                return redirect('profile_singin')
+
+        else:
+            messages.info(request,'Pasword is not same')
+            return redirect('profile_signup')
+     
+    else:
+        return render(request,'a_profile/signup.html')
+
+def profile_logout(request):
     return render(request,'a_profile/profile_logout.html')
